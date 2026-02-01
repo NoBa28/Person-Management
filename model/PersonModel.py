@@ -1,27 +1,26 @@
 from model.Person import Person
 
+
 class PersonModel:
 
-    _persons_in_record = []
-
     def __init__(self):
-        pass
+        self._all_persons: list[Person] = []
 
-    def find_person_in_record(self, person:Person) -> Person | None:
+    def find_person_in_record(self, person: Person) -> Person | None:
         return next(
-            (p for p in self._persons_in_record
+            (p for p in self._all_persons
              if p == person),
             None
         )
 
     def add_person(self, person: Person):
-        self._persons_in_record.append(person)
+        self._all_persons.append(person)
 
     def update_person(self, person: Person):
         person_to_update = self.find_person_in_record(person)
 
     def delete_person(self, person: Person):
-        self._persons_in_record.remove(person)
+        self._all_persons.remove(person)
 
-    def get_persons_in_record(self):
-        return self._persons_in_record
+    def get_all_persons(self):
+        return self._all_persons
