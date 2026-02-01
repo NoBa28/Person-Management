@@ -1,6 +1,7 @@
 import re
 from datetime import datetime
 
+
 class InputValidator:
     STRING_PATTERN = re.compile(r"^[a-zA-Z]+$")
     NUMBER_PATTERN = re.compile(r"^[0-9]+$")

@@ -1,4 +1,3 @@
-
 class Person:
 
     def __init__(self, first_name, last_name, birth_date, mail, address):
@@ -12,7 +11,8 @@ class Person:
         return (f"Vorname: {self.first_name}\n"
                 f"Nachname: {self.last_name}\n"
                 f"Geburtsdatum: {self.birth_date}\n"
-                f"E-Mail: {self.mail}")
+                f"E-Mail: {self.mail}\n"
+                f"{self.address}")
 
     def __eq__(self, other):
         if not isinstance(other, Person):

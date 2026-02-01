@@ -1,6 +1,6 @@
-from view.PersonView import PersonView
-from model.PersonModel import PersonModel
 from controller.PersonController import PersonController
+from model.PersonModel import PersonModel
+from view.PersonView import PersonView
 
 if __name__ == "__main__":
     person_view = PersonView()

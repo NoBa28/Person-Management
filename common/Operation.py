@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Operation(Enum):
     CREATE = "1"
     UPDATE = "2"
