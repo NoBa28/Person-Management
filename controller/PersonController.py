@@ -29,25 +29,26 @@ class PersonController:
         self.model.add_person(person)
         return person
 
-    def get_person_to_update(self) -> Person:
+    def get_person(self) -> Person:
         persons = self.model.get_all_persons()
         while True:
-            pers_number = self.view.ask_person_to_update("Geben sie die Nr. der Person ein, welche Sie bearbeiten moechten.")
+            pers_number = self.view.ask_person_to_update(
+                "Geben sie die Nr. der Person ein, welche Sie bearbeiten moechten.")
             if pers_number > len(self.model.get_all_persons()):
                 self.view.print_invalid_person_msg()
             else:
                 return persons[pers_number - 1]
 
     def update_person(self):
-        person_to_update = self.get_person_to_update()
+        person_to_update = self.get_person()
         self.view.print_person(person_to_update)
         update_person = self.view.collect_person_update(person_to_update)
-
-        if person_to_update.address:
-            update_address = self.view.collect_address_update(person_to_update.address)
-            self.model.update_address(person_to_update.address, update_address)
-
         self.model.update_person(person_to_update, update_person)
+
+    def delete_person(self):
+        person_to_delete = self.get_person()
+        self.view.print_person(person_to_delete)
+        self.model.delete_person(person_to_delete)
 
     def handle_operation(self, operation: str):
         match operation:
@@ -57,7 +58,7 @@ class PersonController:
                 self.update_person()
                 pass
             case Operation.DELETE.value:
-                # self.delete_person()
+                self.delete_person()
                 pass
             case Operation.PRINT.value:
                 self.view.print_persons(self.model.get_all_persons())

@@ -6,7 +6,7 @@ class InputValidator:
     STRING_PATTERN = re.compile(r"^[a-zA-Z]+$")
     NUMBER_PATTERN = re.compile(r"^[0-9]+$")
     ZIP_CODE_PATTERN = re.compile(r"^[0-9]{4,5}$")
-    YES_NO_PATTERN = re.compile(r"^[yYnN]$")
+    YES_NO_PATTERN = re.compile(r"^[jJnN]$")
     EMAIL_PATTERN = re.compile(
         r"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
     )

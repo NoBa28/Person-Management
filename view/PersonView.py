@@ -8,7 +8,8 @@ from model.Person import Person
 class PersonView:
     DEFAULT_ERROR = "Ungueltige Eingabe"
 
-    def ask(self, label: str, validator, error_msg=DEFAULT_ERROR) -> str:
+    @staticmethod
+    def ask(label: str, validator, error_msg=DEFAULT_ERROR) -> str:
         while True:
             input_value = input(f"{label}: ")
             if validator(input_value):
@@ -17,17 +18,20 @@ class PersonView:
                 print(error_msg)
 
     def ask_yes_no(self, label: str) -> bool:
-        input_value = self.ask(label + "(Y/N)", InputValidator.is_yes_no)
-        return input_value.lower() == "y"
+        input_value = self.ask(label + "(J/N)", InputValidator.is_yes_no)
+        return input_value.lower() == "j"
 
-    def print_header(self):
+    @staticmethod
+    def print_header():
         print("Personenverwaltung\n")
 
-    def print_program_start(self):
+    @staticmethod
+    def print_program_start():
         print("--------------------")
         print("Es wurden noch keine Personen erfast.")
 
-    def print_option_menu(self):
+    @staticmethod
+    def print_option_menu():
         print("--------------------")
         print("Was möchten Sie tun?")
         print("1 - Person hinzufuegen")
@@ -36,16 +40,19 @@ class PersonView:
         print("4 - Erfasste Personen ausgeben")
         print("--------------------")
 
-    def print_program_end(self):
+    @staticmethod
+    def print_program_end():
         print("Programm wird beendet")
 
     def ask_person_to_update(self, prompt: str) -> int:
         return int(self.ask(prompt, InputValidator.is_number))
 
-    def print_invalid_person_msg(self):
+    @staticmethod
+    def print_invalid_person_msg():
         print("Eine Person mit dieser Nummer existiert nicht.")
 
-    def print_update_menu(self):
+    @staticmethod
+    def print_update_menu():
         print("--------------------")
         print("Was moechten sie aendern?")
         print("1 - Vorname")
@@ -56,7 +63,7 @@ class PersonView:
         print("--------------------")
 
     def ask_optional(self, label: str, current_value: str, validator) -> str:
-        prompt = f"{label} (aktuell: {current_value}, Enter = keine Änderung): "
+        prompt = f"{label} (Aktuell: {current_value}, Enter = keine Änderung): "
         while True:
             value = input(prompt).strip()
             if value == "":
@@ -78,32 +85,32 @@ class PersonView:
     def collect_person_update(self, person: Person) -> PersonUpdate:
         update = PersonUpdate()
 
-        while True:
-            self.print_update_menu()
-            print("0 - Fertig / Beenden")
-            choice = self.ask("Auswahl", InputValidator.is_number)
+        self.print_update_menu()
+        choice = int(self.ask("Auswahl", InputValidator.is_number))
 
-            match choice:
-                case "0":
-                    break
-                case "1":
-                    update.first_name = self.ask("Neuer Vorname", InputValidator.is_string)
-                case "2":
-                    update.last_name = self.ask("Neuer Nachname", InputValidator.is_string)
-                case "3":
-                    update.birth_date = self.ask("Neues Geburtsdatum", InputValidator.is_date)
-                case "4":
-                    update.mail = self.ask("Neue E-Mail", InputValidator.is_email)
-                case "5":
-                    update.address = self.collect_address_update(person.address)
-                case _:
-                    print(self.DEFAULT_ERROR)
+        match choice:
+            case 1:
+                update.first_name = self.ask("Neuer Vorname", InputValidator.is_string)
+            case 2:
+                update.last_name = self.ask("Neuer Nachname", InputValidator.is_string)
+            case 3:
+                update.birth_date = self.ask("Neues Geburtsdatum", InputValidator.is_date)
+            case 4:
+                update.mail = self.ask("Neue E-Mail", InputValidator.is_email)
+            case 5:
+                update.address = self.collect_address_update(person.address)
+            case _:
+                print(self.DEFAULT_ERROR)
+
         return update
 
-    def print_person(self, person: Person):
+    @staticmethod
+    def print_person(person: Person):
+        print()
         print(person)
 
-    def print_persons(self, persons: list[Person]):
+    @staticmethod
+    def print_persons(persons: list[Person]):
         for number, person in enumerate(persons, start=1):
             print(f"\nPerson: {number}")
             print(person)
