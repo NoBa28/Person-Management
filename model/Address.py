@@ -1,6 +1,7 @@
 class Address:
 
-    def __init__(self, street, house_num, zip_code, city, country):
+    def __init__(self, street, house_num, zip_code, city, country, address_id=None):
+        self.address_id = address_id
         self.street = street
         self.house_num = house_num
         self.zip_code = zip_code

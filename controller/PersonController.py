@@ -26,7 +26,7 @@ class PersonController:
         birth_date = self.view.ask("Geburtsdatum", InputValidator.is_date, "Ungueltiges Datum, Format: dd.MM.yyyy")
         email = self.view.ask("E-Mail", InputValidator.is_email, "Ungueltige E-Mail")
         person = Person(first_name, last_name, birth_date, email, self.create_address())
-        self.model.add_person(person)
+        self.model.insert_person(person)
         return person
 
     def get_person(self) -> Person:
