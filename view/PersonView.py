@@ -49,7 +49,7 @@ class PersonView:
 
     @staticmethod
     def print_invalid_person_msg():
-        print("Eine Person mit dieser Nummer existiert nicht.")
+        print("Eine Person mit dieser ID existiert nicht.")
 
     @staticmethod
     def print_update_menu():
@@ -111,6 +111,5 @@ class PersonView:
 
     @staticmethod
     def print_persons(persons: list[Person]):
-        for number, person in enumerate(persons, start=1):
-            print(f"\nPerson: {number}")
+        for person in persons:
             print(person)

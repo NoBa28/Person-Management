@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from common.InputValidator import InputValidator
 from common.Operation import Operation
 from model.Address import Address
@@ -18,12 +20,13 @@ class PersonController:
                                  "Ungueltige Postleitzahl: Min 4, Max. 5 Zahlen")
         city = self.view.ask("Stadt", InputValidator.is_string)
         country = self.view.ask("Land", InputValidator.is_string)
-        return Address(street, house_num, zip_code, city, country)
+        return Address(street, int(house_num), zip_code, city, country)
 
     def create_person(self) -> Person:
         first_name = self.view.ask("Vorname", InputValidator.is_string)
         last_name = self.view.ask("Nachname", InputValidator.is_string)
-        birth_date = self.view.ask("Geburtsdatum", InputValidator.is_date, "Ungueltiges Datum, Format: dd.MM.yyyy")
+        birth_date_str = self.view.ask("Geburtsdatum (DD.MM.YYYY)", InputValidator.is_date, "Ungueltiges Format")
+        birth_date = datetime.strptime(birth_date_str, "%d.%m.%Y").date()
         email = self.view.ask("E-Mail", InputValidator.is_email, "Ungueltige E-Mail")
         person = Person(first_name, last_name, birth_date, email, self.create_address())
         self.model.insert_person(person)
@@ -31,13 +34,15 @@ class PersonController:
 
     def get_person(self) -> Person:
         persons = self.model.get_all_persons()
+        person_dict = {p.person_id: p for p in persons}
         while True:
-            pers_number = self.view.ask_person_to_update(
-                "Geben sie die Nr. der Person ein, welche Sie bearbeiten moechten.")
-            if pers_number > len(self.model.get_all_persons()):
-                self.view.print_invalid_person_msg()
+            pers_id = self.view.ask_person_to_update(
+                "Geben sie die ID der Person ein, welche Sie bearbeiten moechten.")
+            person = person_dict.get(pers_id)
+            if person:
+                return person
             else:
-                return persons[pers_number - 1]
+                self.view.print_invalid_person_msg()
 
     def update_person(self):
         person_to_update = self.get_person()

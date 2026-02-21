@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import mysql.connector
-
-from db.db_config import DB_CONFIG
+from db.DB import DB
 from dto.AddressUpdate import AddressUpdate
 from dto.PersonUpdate import PersonUpdate
 from model.Address import Address
@@ -44,7 +42,7 @@ class PersonModel:
         return None
 
     def insert_person(self, person: Person):
-        with mysql.connector.connect(**DB_CONFIG) as conn:
+        with DB.connect() as conn:
             with conn.cursor() as cursor:
                 existing_address_id = self.get_address_id(cursor, person.address)
                 if existing_address_id:
@@ -84,7 +82,7 @@ class PersonModel:
 
     @staticmethod
     def update_in_db(table_name: str, dto, obj_id: int, fields: tuple[str, ...]):
-        with mysql.connector.connect(**DB_CONFIG) as conn:
+        with DB.connect() as conn:
             with conn.cursor() as cursor:
                 set_queries = []
                 values = []
@@ -105,7 +103,7 @@ class PersonModel:
 
     @staticmethod
     def delete_person(person: Person):
-        with mysql.connector.connect(**DB_CONFIG) as conn:
+        with DB.connect() as conn:
             with conn.cursor() as cursor:
                 cursor.execute("SELECT address_id FROM person WHERE id = %s", (person.person_id,))
                 result = cursor.fetchone()
@@ -116,20 +114,20 @@ class PersonModel:
                 cursor.execute("SELECT COUNT(*) FROM person WHERE address_id = %s", (address_id,))
                 count = cursor.fetchone()[0]
                 if count == 0:
-                    cursor.execute( "DELETE FROM address WHERE id = %s", (address_id,))
+                    cursor.execute("DELETE FROM address WHERE id = %s", (address_id,))
                 conn.commit()
 
     @staticmethod
     def get_all_persons() -> list[Person]:
-        with mysql.connector.connect(**DB_CONFIG) as conn:
+        with DB.connect() as conn:
             with conn.cursor(dictionary=True) as cursor:
                 cursor.execute("""
-                               SELECT p.id         AS person_id,
+                               SELECT p.id AS person_id,
                                       p.first_name,
                                       p.last_name,
                                       p.birth_date,
                                       p.mail,
-                                      a.address_id AS address_id,
+                                      a.id AS address_id,
                                       a.street,
                                       a.house_num,
                                       a.zip_code,

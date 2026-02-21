@@ -4,6 +4,7 @@ from view.PersonView import PersonView
 from db import setup_db
 
 if __name__ == "__main__":
+    setup_db.create_database()
     setup_db.create_address_table()
     setup_db.create_person_table()
     person_view = PersonView()

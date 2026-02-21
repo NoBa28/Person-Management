@@ -11,3 +11,4 @@ class AddressUpdate:
     zip_code: Optional[str] = None
     city: Optional[str] = None
     country: Optional[str] = None
+    address_id: Optional[int] = None
