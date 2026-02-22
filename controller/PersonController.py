@@ -16,8 +16,10 @@ class PersonController:
     def create_address(self) -> Address:
         street = self.view.ask("Strasse", InputValidator.is_string)
         house_num = self.view.ask("Hausnummer", InputValidator.is_number)
-        zip_code = self.view.ask("Postleitzahl", InputValidator.is_zip_code,
-                                 "Ungueltige Postleitzahl: Min 4, Max. 5 Zahlen")
+        zip_code = self.view.ask(
+            "Postleitzahl", InputValidator.is_zip_code,
+            error_msg="Ungueltige Postleitzahl: Min 4, Max. 5 Zahlen"
+        )
         city = self.view.ask("Stadt", InputValidator.is_string)
         country = self.view.ask("Land", InputValidator.is_string)
         return Address(street, int(house_num), zip_code, city, country)
@@ -25,9 +27,13 @@ class PersonController:
     def create_person(self) -> Person:
         first_name = self.view.ask("Vorname", InputValidator.is_string)
         last_name = self.view.ask("Nachname", InputValidator.is_string)
-        birth_date_str = self.view.ask("Geburtsdatum (DD.MM.YYYY)", InputValidator.is_date, "Ungueltiges Format")
-        birth_date = datetime.strptime(birth_date_str, "%d.%m.%Y").date()
-        email = self.view.ask("E-Mail", InputValidator.is_email, "Ungueltige E-Mail")
+        birth_date = self.view.ask(
+            "Geburtsdatum (DD.MM.YYYY)",
+            InputValidator.is_date,
+            lambda x: datetime.strptime(x, "%d.%m.%Y").date(),
+            "Ungueltiges Format"
+        )
+        email = self.view.ask("E-Mail", InputValidator.is_email, error_msg="Ungueltige E-Mail")
         person = Person(first_name, last_name, birth_date, email, self.create_address())
         self.model.insert_person(person)
         return person

@@ -23,7 +23,7 @@ class Person:
         return (f"Person ID: {self.person_id}\n"
                 f"Vorname: {self.first_name}\n"
                 f"Nachname: {self.last_name}\n"
-                f"Geburtsdatum: {self.birth_date}\n"
+                f"Geburtsdatum: {self.birth_date.strftime("%d.%m.%Y")}\n"
                 f"E-Mail: {self.mail}\n"
                 f"{self.address}")
 
