@@ -23,6 +23,7 @@ The application uses a **MySQL database** for persistent storage and follows a c
 - MySQL Server 8+
 - mysql-connector-python
 - python-dotenv
+- unittest & unittest.mock (for testing)
 
 
 ---
@@ -190,6 +191,32 @@ This project follows the MVC-pattern:
 - **DB Layer:** Centralized connection handling
 
 ---
+
+## Unit Tests
+
+Unit tests are implemented using Python's built-in unittest framework.
+Tests cover the following modules:
+- common.InputValidator: validates strings, numbers, emails, dates, etc.
+- controller.PersonController: creation, update, delete and flow handling
+- db.DB and setup_db: database and table creation
+- model.PersonModel: insert, update, delete and fetch persons and adresses
+
+## Running Tests
+
+Activate your virtual environment and run:
+
+```bash
+python -m unittest discover -s tests
+```
+
+```bash
+python -m unittest tests.test_model.TestPersonModel
+```
+
+### Notes
+
+- Mocks are used to simulate database connections to avoid changing real data during tests.
+- Tests achieve high coverage for all CRUD operations, DTO updates and validation logic.
 
 ## Security Notes
 
